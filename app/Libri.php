@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Libri extends Model
 {
     protected $fillable = ['ISBN','titull','stoku'];
+    protected $table = "libris";
 
     public function autors()
     {

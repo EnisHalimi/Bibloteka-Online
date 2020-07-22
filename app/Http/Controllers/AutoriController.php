@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Autor;
 
 class AutoriController extends Controller
 {
@@ -13,7 +14,8 @@ class AutoriController extends Controller
      */
     public function index()
     {
-        //
+        $autoret = Autor::all();
+        return view('autori.index')->with('autoret',$autoret);
     }
 
     /**
@@ -23,7 +25,7 @@ class AutoriController extends Controller
      */
     public function create()
     {
-        //
+        return view('autori.create');
     }
 
     /**
@@ -34,7 +36,16 @@ class AutoriController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $request->validate([
+            'name' => 'required',
+            'periudha' => 'required',
+        ]);
+        $autori = new Autor;
+        $autori->name = $request->name;
+        $autori->periudha = $request->periudha;
+        $autori->save();
+        return redirect('/autor');
     }
 
     /**
@@ -45,7 +56,8 @@ class AutoriController extends Controller
      */
     public function show($id)
     {
-        //
+        $autori = Autor::find($id);
+        return view('autori.show')->with('autori',$autori);
     }
 
     /**
@@ -56,7 +68,8 @@ class AutoriController extends Controller
      */
     public function edit($id)
     {
-        //
+        $autori = Autor::find($id);
+        return view('autori.edit')->with('autori',$autori);
     }
 
     /**
@@ -68,7 +81,15 @@ class AutoriController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'periudha' => 'required',
+        ]);
+        $autori = Autor::find($id);
+        $autori->name = $request->name;
+        $autori->periudha = $request->periudha;
+        $autori->save();
+        return redirect('/autor');
     }
 
     /**
@@ -79,6 +100,8 @@ class AutoriController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $autori = Autor::find($id);
+        $autori->delete();
+        return redirect('/autor');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Libri;
 
 class LibriController extends Controller
 {
@@ -13,7 +14,8 @@ class LibriController extends Controller
      */
     public function index()
     {
-        //
+        $librat = Libri::all();
+        return view('libri.index')->with('librat', $librat);
     }
 
     /**
@@ -23,7 +25,7 @@ class LibriController extends Controller
      */
     public function create()
     {
-        //
+        return view('libri.create');
     }
 
     /**
@@ -34,7 +36,18 @@ class LibriController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $request->validate([
+            'isbn' => 'required|unique:libris|numeric|digits:10',
+            'titulli' => 'required',
+            'stoku' => 'required|numeric',
+        ]);
+        $libri = new Libri;
+        $libri->ISBN = $request->isbn;
+        $libri->titulli = $request->titulli;
+        $libri->stoku = $request->stoku;
+        $libri->save();
+        return redirect('/libri');
     }
 
     /**
@@ -45,7 +58,8 @@ class LibriController extends Controller
      */
     public function show($id)
     {
-        //
+        $libri = Libri::find($id);
+        return view('libri.show')->with('libri', $libri);
     }
 
     /**
@@ -56,7 +70,8 @@ class LibriController extends Controller
      */
     public function edit($id)
     {
-        //
+        $libri = Libri::find($id);
+        return view('libri.edit')->with('libri', $libri);
     }
 
     /**
@@ -68,7 +83,17 @@ class LibriController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'isbn' => 'required|unique:libris|numeric|digits:10',
+            'titulli' => 'required',
+            'stoku' => 'required|numeric',
+        ]);
+        $libri = Libri::find($id);
+        $libri->ISBN = $request->isbn;
+        $libri->titulli = $request->titulli;
+        $libri->stoku = $request->stoku;
+        $libri->save();
+        return redirect('/libri');
     }
 
     /**
@@ -79,6 +104,8 @@ class LibriController extends Controller
      */
     public function destroy($id)
     {
-        //
-    }
+        $libri = Libri::find($id);
+        $libri->delete();
+        return redirect('/libri');
+        }
 }
