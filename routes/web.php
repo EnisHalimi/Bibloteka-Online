@@ -14,9 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 Auth::routes();
-Route::resource('user', 'UsersController');
+Route::resource('users', 'UsersController');
 Route::resource('libri', 'LibriController');
 Route::resource('autor', 'AutoriController');
+Route::resource('zhaner', 'ZhanriController');

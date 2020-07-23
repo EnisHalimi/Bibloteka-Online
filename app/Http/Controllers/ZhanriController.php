@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Zhanri;
 
 class ZhanriController extends Controller
 {
@@ -13,7 +14,8 @@ class ZhanriController extends Controller
      */
     public function index()
     {
-        //
+        $zhanret = Zhanri::all();
+        return view('zhanri.index')->with('zhanret',$zhanret);
     }
 
     /**
@@ -23,7 +25,7 @@ class ZhanriController extends Controller
      */
     public function create()
     {
-        //
+        return view('zhanri.create');
     }
 
     /**
@@ -34,7 +36,13 @@ class ZhanriController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'titulli' => 'required',
+        ]);
+        $zhanri = new Zhanri;
+        $zhanri->titulli = $request->titulli;
+        $zhanri->save();
+        return redirect('/zhaner');
     }
 
     /**
@@ -45,7 +53,8 @@ class ZhanriController extends Controller
      */
     public function show($id)
     {
-        //
+        $zhanri = Zhanri::find($id);
+        return view('zhanri.show')->with('zhanri',$zhanri);
     }
 
     /**
@@ -56,7 +65,8 @@ class ZhanriController extends Controller
      */
     public function edit($id)
     {
-        //
+        $zhanri = Zhanri::find($id);
+        return view('zhanri.edit')->with('zhanri',$zhanri);
     }
 
     /**
@@ -68,7 +78,13 @@ class ZhanriController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'titulli' => 'required',
+        ]);
+        $zhanri = Zhanri::find($id);
+        $zhanri->titulli = $request->titulli;
+        $zhanri->save();
+        return redirect('/zhaner');
     }
 
     /**
@@ -79,6 +95,8 @@ class ZhanriController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $zhanri = Zhanri::find($id);
+        $zhanri->delete();
+        return redirect('/zhaner');
     }
 }

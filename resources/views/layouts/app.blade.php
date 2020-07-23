@@ -40,7 +40,7 @@
                             <a class="nav-link @yield('libri')" href="\libri">{{ __('Librat') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @yield('zhanri')" href="\zhanri">{{ __('Zhanret') }}</a>
+                            <a class="nav-link @yield('zhanri')" href="\zhaner">{{ __('Zhanret') }}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link @yield('users')" href="\users">{{ __('Perdoruesit') }}</a>
