@@ -7,6 +7,12 @@ use App\Libri;
 
 class LibriController extends Controller
 {
+
+    public function librat()
+    {
+        $librat = Libri::all();
+        return view('bibloteka.librat')->with('librat', $librat);
+    }
     /**
      * Display a listing of the resource.
      *

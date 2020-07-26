@@ -14,10 +14,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    return view('bibloteka.index');
 });
 Auth::routes();
 Route::resource('users', 'UsersController');
 Route::resource('libri', 'LibriController');
 Route::resource('autor', 'AutoriController');
 Route::resource('zhaner', 'ZhanriController');
+Route::get('/kartoni', 'UsersController@kartoni');
+Route::get('/librat', 'LibriController@librat');
+Route::get('/zhanret', 'ZhanriController@zhanret');
+Route::get('/autoret', 'AutoriController@autoret');

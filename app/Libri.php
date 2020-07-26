@@ -21,6 +21,6 @@ class Libri extends Model
 
     public function users()
     {
-        return $this->belongsToMany('App\User','kartoni')->wherePivot('data_e_marrjes','afati');
+        return $this->belongsToMany('App\User','kartoni')->withPivot(['data_e_marrjes','afati',])->withTimeStamps();
     }
 }

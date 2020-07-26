@@ -15,40 +15,56 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+              <a class="navbar-brand" href="/">Bibloteka Online</a>
+              <div class="input-group w-25">
+                <input type="text" class="form-control" placeholder="Kerko..." aria-label="Kerko..." aria-describedby="kerko">
+                <div class="input-group-append">
+                    <button type="button"  class="btn btn-primary" >
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </div>
+              </div>
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
+                    @if(Auth::user()->isAdmin)
+                    <li class="nav-item">
+                        <a class="nav-link @yield('libri')" href="\libri">{{ __('Librat') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @yield('zhanri')" href="\zhaner">{{ __('Zhanret') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @yield('autor')" href="\autor">{{ __('Autoret') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @yield('users')" href="\users">{{ __('Perdoruesit') }}</a>
+                    </li>
+                    @else
                         <li class="nav-item">
-                            <a class="nav-link @yield('autor')" href="\autor">{{ __('Autoret') }}</a>
+                            <a class="nav-link @yield('libri')" href="\librat">{{ __('Librat') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @yield('libri')" href="\libri">{{ __('Librat') }}</a>
+                            <a class="nav-link @yield('zhanri')" href="\zhanret">{{ __('Zhanret') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @yield('zhanri')" href="\zhaner">{{ __('Zhanret') }}</a>
+                            <a class="nav-link @yield('autor')" href="\autoret">{{ __('Autoret') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @yield('users')" href="\users">{{ __('Perdoruesit') }}</a>
+                            <a class="nav-link @yield('kartoni')" href="\kartoni">{{ __('Kartoni') }}</a>
                         </li>
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
+                    @endif
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
@@ -66,6 +82,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -78,14 +95,36 @@
                                 </div>
                             </li>
                         @endguest
-                    </ul>
-                </div>
+                </ul>
+              </div>
             </div>
-        </nav>
+          </nav>
 
-        <main class="py-4">
+            <div class="container-fluid pt-3">
+                @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <strong>Gabim</strong>  {{session('error')}}
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+
+              @endif
+                    @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                      <strong>Sukses</strong>  {{session('success')}}
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+
+
+                  @endif
+            <div class="row">
+
+
             @yield('content')
-        </main>
-    </div>
+            </div>
+        </div>
 </body>
 </html>

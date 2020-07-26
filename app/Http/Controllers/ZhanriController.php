@@ -7,6 +7,12 @@ use App\Zhanri;
 
 class ZhanriController extends Controller
 {
+
+    public function zhanret()
+    {
+        $zhanret = Zhanri::all();
+        return view('bibloteka.zhanret')->with('zhanret',$zhanret);
+    }
     /**
      * Display a listing of the resource.
      *

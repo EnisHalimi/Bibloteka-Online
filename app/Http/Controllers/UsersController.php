@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
+
+    public function kartoni()
+    {
+        $user = User::find(auth()->user()->id);
+        return view('bibloteka.kartoni')->with('user',$user);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -90,13 +96,12 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $user = User::find($id);
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$user->id],
             'password' => ['confirmed'],
         ]);
-
-        $user = User::find($id);
         $user->name = $request->name;
         $user->email = $request->email;
         if($request->admin)
