@@ -2,9 +2,9 @@
 @section('Titulli','Ndrysho Autor')
 @section('autor','active  bg-dark text-light')
 @section('content')
-<h3> Ndrysho Autorin {{$autori->name}}</h3>
 <div class="container">
-<form class="form" action="{{route('autor.update',$autori->id)}}" method="POST">
+<h1>Ndrysho Autorin: {{$autori->name}}</h1>
+<form class="form" action="{{route('autor.update',$autori->id)}}" method="POST" enctype="multipart/form-data">
 @csrf
 @method('PUT')
 <div class="form-group">
@@ -26,7 +26,35 @@
 @endif
 </div>
 <div class="form-group">
-<button class="btn btn-success" type="submit">Ndrysho</button>
+    <label for="ditelindja">Data e lindjes</label>
+    <input  class="form-control" type='date' name="ditelindja" id="ditelindja" value="{{$autori->ditelindja}}">
+    @if ($errors->has('ditelindja'))
+    <span class="help-block">
+        <strong class="text-danger"><small>{{ $errors->first('ditelindja') }}</small></strong>
+    </span>
+    @endif
+</div>
+<div class="form-group">
+    <label for="foto">Fotografia</label>
+        <input type="file" class="form-control" id="foto" name="Foto"   placeholder="Fotografia e Autorit">
+      @if ($errors->has('Foto'))
+                      <span class="help-block">
+                        <strong class="text-danger"><small>{{ $errors->first('Foto') }}</small></strong>
+                      </span>
+    @endif
+    </div>
+    <div class="form-group">
+        <label for="biografia">Biografia</label>
+        <textarea class="form-control" id="biografia" name="biografia">{{$autori->biografia}}</textarea>
+          @if ($errors->has('biografia'))
+                          <span class="help-block">
+                            <strong class="text-danger"><small>{{ $errors->first('biografia') }}</small></strong>
+                          </span>
+        @endif
+        </div>
+<div class="form-group">
+    <a class="btn btn-secondary" href="{{ url()->previous() }}" ><i class="fa fa-chevron-left"></i> Kthehu</a>
+<button class="btn btn-success" type="submit"><i class="fa fa-pen"></i> Ndrysho</button>
 </div>
 
 </form>

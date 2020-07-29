@@ -3,8 +3,9 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-
+require('./components/jquery.min');
 require('./bootstrap');
+require('./components/datatables.min');
 
 window.Vue = require('vue');
 
@@ -29,4 +30,60 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#app',
+});
+
+
+$(document).ready( function () {
+    $('#searchZhanri').DataTable({
+        "processing": true,
+        "serverSide": true, "stateSave": true,
+        "ajax":"/zhanret-list",
+        "columns": [
+          {"data":"titulli"},
+          {"data":"created_at"},
+          {"data": "Shto", "bSearchable": false}
+        ],
+        "language": {
+          "lengthMenu": "Shfaq _MENU_ për faqe",
+          "zeroRecords": "Nuk u gjet asnjë e dhënë",
+          "info": "Duke shfaqur faqen _PAGE_ nga _PAGES_",
+          "infoEmpty": "Nuk ka të dhëna",
+          "infoFiltered": "(Të filtruar nga _MAX_ total)",
+          "processing":     "Duke procesuar...",
+          "search":         "",
+          "paginate": {
+            "first":      "Fillimi",
+            "last":       "Fundi",
+            "next":       "Para",
+            "previous":   "Prapa"}
+          }
+        });
+
+        $('#searchAutori').DataTable({
+            "processing": true,
+            "serverSide": true, "stateSave": true,
+            "ajax":"/autoret-list",
+            "columns": [
+              {"data":"name"},
+              {"data":"periudha"},
+              {"data": "Shto", "bSearchable": false}
+            ],
+            "language": {
+              "lengthMenu": "Shfaq _MENU_ për faqe",
+              "zeroRecords": "Nuk u gjet asnjë e dhënë",
+              "info": "Duke shfaqur faqen _PAGE_ nga _PAGES_",
+              "infoEmpty": "Nuk ka të dhëna",
+              "infoFiltered": "(Të filtruar nga _MAX_ total)",
+              "processing":     "Duke procesuar...",
+              "search":         "",
+              "paginate": {
+                "first":      "Fillimi",
+                "last":       "Fundi",
+                "next":       "Para",
+                "previous":   "Prapa"}
+              }
+            });
+
+
+
 });

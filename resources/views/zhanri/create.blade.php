@@ -3,6 +3,7 @@
 @section('zhanri','active  bg-dark text-light')
 @section('content')
 <div class="container">
+<h1>Krijo Zhaner </h1>
 <form class="form" action="{{route('zhaner.store')}}" method="POST">
 @csrf
 <div class="form-group">
@@ -15,7 +16,8 @@
 @endif
 </div>
 <div class="form-group">
-<button class="btn btn-success" type="submit">Shto</button>
+    <a class="btn btn-secondary" href="{{ url()->previous() }}" ><i class="fa fa-chevron-left"></i> Kthehu</a>
+<button class="btn btn-success" type="submit"><i class="fa fa-plus"></i> Shto </button>
 </div>
 
 </form>

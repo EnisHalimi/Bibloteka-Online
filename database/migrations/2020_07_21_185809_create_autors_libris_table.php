@@ -14,6 +14,7 @@ class CreateAutorsLibrisTable extends Migration
     public function up()
     {
         Schema::create('autors_libris', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('autor_id');
             $table->foreign('autor_id')->references('id')->on('autors');
             $table->unsignedBigInteger('libri_id');

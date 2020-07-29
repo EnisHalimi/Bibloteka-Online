@@ -7,15 +7,16 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Bibloteka - @yield('Titulli')</title>
+    <title>@yield('Titulli') - Bibloteka</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+
+
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -37,7 +38,9 @@
               </button>
               <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
+                    @guest
 
+                    @else
                     @if(Auth::user()->isAdmin)
                     <li class="nav-item">
                         <a class="nav-link @yield('libri')" href="\libri">{{ __('Librat') }}</a>
@@ -65,6 +68,7 @@
                             <a class="nav-link @yield('kartoni')" href="\kartoni">{{ __('Kartoni') }}</a>
                         </li>
                     @endif
+                    @endguest
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
@@ -126,5 +130,7 @@
             @yield('content')
             </div>
         </div>
+         <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
 </body>
 </html>

@@ -3,8 +3,7 @@
 @section('users','active  bg-dark text-light')
 @section('content')
 <div class="container">
-<h1 class="h1">Perdoruesi {{$user->name}}</h1>
-<a class="btn btn-success" href="/users/create">Shto Perdorues</a>
+    <h1 class="h1 mb-5">Perdoruesi {{$user->name}}</h1>
 <table class="table table-stripped">
 <tbody>
     <tr>
@@ -34,6 +33,7 @@
     <th>Zhanri</th>
     <th>Data e marrjes</th>
     <th>Data e kthimit</th>
+    <th>Kthyer</th>
     <th>Menaxhimi</th>
 </thead>
 <tbody>
@@ -44,14 +44,10 @@
         <td>{{$libri->created_at}}</td>
         <td>{{$libri->pivot->data_e_marrjes}}</td>
         <td>{{$libri->pivot->afati}}</td>
+        <td>@if($libri->pivot->kthyer) Po @else Jo @endif</td>
+
         <td>
-        <a class="btn btn-secondary" href="/libri/{{$libri->id}}">Shiko</a>
-        <a class="btn btn-primary" href="/libri/{{$libri->id}}/edit">Ndrysho</a>
-        <form class="d-inline" method="POST" action="{{route('libri.destroy',$libri->id)}}">
-            @csrf
-            @method('Delete')
-        <button class="btn btn-danger" type="submit">Fshij</button>
-        </form>
+        <a class="btn btn-secondary" href="/libri/{{$libri->id}}"><i class="fa fa-eye"></i> Shiko</a>
         </td>
 
     </tr>

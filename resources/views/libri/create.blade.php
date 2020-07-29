@@ -2,8 +2,9 @@
 @section('Titulli','Krijo Liber')
 @section('libri','active  bg-dark text-light')
 @section('content')
-<div class="container">
-<form class="form" action="{{route('libri.store')}}" method="POST">
+<div class="container py-3">
+<h1>Krijo Liber </h1>
+<form class="form" action="{{route('libri.store')}}" method="POST"  enctype="multipart/form-data">
 @csrf
 <div class="form-group">
 <label for="isbn">ISBN</label>
@@ -32,16 +33,115 @@
 </span>
 @endif
 </div>
-<div class="form-group">
-    <label for="zhanri">Zhanri</label>
-    <input  class="form-control" type='text' name="zhanri" id="zhanri" value="{{old('zhanri')}}">
+<div class="form-group mb-3">
+    <label class="text-xs" for="zhanri">Zhanret</label>
+    <div class="input-group mb-3">
+  <div class="input-group-prepend">
+      <button class="btn btn-outline-primary" type="button"  data-toggle="modal" data-target="#zhanriModal"><i class="fa fa-plus"></i> </button>
     </div>
-    <div class="form-group">
-        <label for="autori">Autori</label>
-        <input  class="form-control" type='text' name="autori" id="autori" value="{{old('autori')}}">
+    <input  hidden id="zhanri-list"  name="Zhanret"/>
+  <select readonly  multiple placeholder="Zhanret" class="form-control form-control-user @error('zhanri') is-invalid @enderror" id="zhanri" name="zhanri" >
+    </select>
+    <div class="input-group-append">
+        <button type="button" class="btn btn-outline-danger" onclick=" document.getElementById('zhanri-list').value='';
+        document.getElementById('zhanri').options.length = 0;" >
+          <i class="fa fa-trash"></i>
+        </button>
+      </div>
+    </div>
+  <div class="modal fade" id="zhanriModal" tabindex="-1" role="dialog" aria-labelledby="zhanriModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="zhanriModalLabel">Zgjedh Zhanrin</h5>
+          </div>
+          <div class="modal-body">
+            <table class="table table-bordered table-hover" id="searchZhanri"  width="100%" cellspacing="0" >
+              <thead class="bg-dark text-light">
+                <tr>
+                  <th scope="col">Titulli</th>
+                  <th scope="col">Data</th>
+                  <th scope="col">Shto</th>
+                </tr>
+              </thead>
+              <tbody >
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Mbylle</button>
+          </div>
         </div>
+      </div>
+    </div>
+@if ($errors->has('zhanri'))
+                  <span class="help-block">
+                    <strong class="text-danger"><small>{{ $errors->first('zhanri') }}</small></strong>
+                  </span>
+@endif
+
+</div>
+<div class="form-group mb-3">
+    <label class="text-xs" for="autoret">Autoret</label>
+    <div class="input-group mb-3">
+  <div class="input-group-prepend">
+      <button class="btn btn-outline-primary" type="button"  data-toggle="modal" data-target="#autoretModal"><i class="fa fa-plus"></i> </button>
+    </div>
+    <input  hidden id="autoret-list"  name="Autoret"/>
+  <select readonly  multiple placeholder="Autoret" class="form-control form-control-user @error('autoret') is-invalid @enderror" id="autoret" name="autoret" >
+    </select>
+    <div class="input-group-append">
+        <button type="button" class="btn btn-outline-danger" onclick=" document.getElementById('autoret-list').value='';
+        document.getElementById('autoret').options.length = 0;" >
+          <i class="fa fa-trash"></i>
+        </button>
+      </div>
+    </div>
+  <div class="modal fade" id="autoretModal" tabindex="-1" role="dialog" aria-labelledby="autoretModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="autoretModalLabel">Zgjedh Autorin</h5>
+          </div>
+          <div class="modal-body">
+            <table class="table table-bordered table-hover" id="searchAutori"  width="100%" cellspacing="0" >
+              <thead class="bg-dark text-light">
+                <tr>
+                  <th scope="col">Emri Mbiemri</th>
+                  <th scope="col">Periudha</th>
+                  <th scope="col">Shto</th>
+                </tr>
+              </thead>
+              <tbody >
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Mbylle</button>
+          </div>
+        </div>
+      </div>
+    </div>
+@if ($errors->has('Autoret'))
+                  <span class="help-block">
+                    <strong class="text-danger"><small>{{ $errors->first('Autoret') }}</small></strong>
+                  </span>
+@endif
+
+</div>
 <div class="form-group">
-<button class="btn btn-success" type="submit">Shto</button>
+<label for="foto">Kopertina</label>
+    <input type="file" class="form-control" id="foto" name="Foto"  placeholder="Kopertina e Librit">
+  @if ($errors->has('Foto'))
+                  <span class="help-block">
+                    <strong class="text-danger"><small>{{ $errors->first('Foto') }}</small></strong>
+                  </span>
+@endif
+</div>
+
+<div class="form-group">
+    <a class="btn btn-secondary" href="{{ url()->previous() }}" ><i class="fa fa-chevron-left"></i> Kthehu</a>
+<button class="btn btn-success" type="submit"><i class="fa fa-plus"></i> Shto</button>
 </div>
 
 </form>

@@ -4,9 +4,29 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Zhanri;
+use DataTables;
 
 class ZhanriController extends Controller
 {
+    protected $dateFormat = 'd/M/Y H';
+
+    public function zhanretList()
+    {
+        $zhanret = Zhanri::all();
+        $table = DataTables::of($zhanret)
+        ->addColumn('Shto' ,'<a class="btn btn-circle btn-secondary btn-sm"   data-dismiss="modal" onclick="
+        var sel = document.getElementById(\'zhanri\');
+        var opt = document.createElement(\'option\');
+        var inp = document.getElementById(\'zhanri-list\');
+        opt.appendChild( document.createTextNode(\'{{$titulli}}\') );
+        opt.value = \'{{$id}}\';
+        sel.appendChild(opt);
+        inp.value += \'{{$id}}\' +\',\';
+        " ><i class="fa text-light fa-arrow-right"></i></a>')
+        ->rawColumns(['Shto'])
+        ->make(true);
+        return $table;
+    }
 
     public function zhanret()
     {
@@ -20,6 +40,8 @@ class ZhanriController extends Controller
      */
     public function index()
     {
+        if(!auth()->user()->isAdmin)
+            return redirect('/')->with('error','Nuk keni autorizim');
         $zhanret = Zhanri::all();
         return view('zhanri.index')->with('zhanret',$zhanret);
     }
@@ -31,6 +53,8 @@ class ZhanriController extends Controller
      */
     public function create()
     {
+        if(!auth()->user()->isAdmin)
+            return redirect('/')->with('error','Nuk keni autorizim');
         return view('zhanri.create');
     }
 
@@ -42,13 +66,15 @@ class ZhanriController extends Controller
      */
     public function store(Request $request)
     {
+        if(!auth()->user()->isAdmin)
+            return redirect('/')->with('error','Nuk keni autorizim');
         $request->validate([
             'titulli' => 'required',
         ]);
         $zhanri = new Zhanri;
         $zhanri->titulli = $request->titulli;
         $zhanri->save();
-        return redirect('/zhaner');
+        return redirect('/zhaner')->with('success','U ndryshua zhanri');
     }
 
     /**
@@ -59,6 +85,8 @@ class ZhanriController extends Controller
      */
     public function show($id)
     {
+        if(!auth()->user()->isAdmin)
+            return redirect('/')->with('error','Nuk keni autorizim');
         $zhanri = Zhanri::find($id);
         return view('zhanri.show')->with('zhanri',$zhanri);
     }
@@ -71,6 +99,8 @@ class ZhanriController extends Controller
      */
     public function edit($id)
     {
+        if(!auth()->user()->isAdmin)
+            return redirect('/')->with('error','Nuk keni autorizim');
         $zhanri = Zhanri::find($id);
         return view('zhanri.edit')->with('zhanri',$zhanri);
     }
@@ -84,13 +114,15 @@ class ZhanriController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!auth()->user()->isAdmin)
+            return redirect('/')->with('error','Nuk keni autorizim');
         $request->validate([
             'titulli' => 'required',
         ]);
         $zhanri = Zhanri::find($id);
         $zhanri->titulli = $request->titulli;
         $zhanri->save();
-        return redirect('/zhaner');
+        return redirect('/zhaner')->with('success','U ndryshua zhanri');
     }
 
     /**
@@ -101,8 +133,11 @@ class ZhanriController extends Controller
      */
     public function destroy($id)
     {
+        if(!auth()->user()->isAdmin)
+            return redirect('/')->with('error','Nuk keni autorizim');
         $zhanri = Zhanri::find($id);
+        $zhanri->libris()->detach();
         $zhanri->delete();
-        return redirect('/zhaner');
+        return redirect('/zhaner')->with('success','U fshi zhanri');
     }
 }

@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('bibloteka.index');
-});
+Route::get('/', 'HomeController@index');
 Auth::routes();
 Route::resource('users', 'UsersController');
 Route::resource('libri', 'LibriController');
@@ -25,3 +23,7 @@ Route::get('/kartoni', 'UsersController@kartoni');
 Route::get('/librat', 'LibriController@librat');
 Route::get('/zhanret', 'ZhanriController@zhanret');
 Route::get('/autoret', 'AutoriController@autoret');
+Route::get('/zhanret-list', 'ZhanriController@zhanretList');
+Route::get('/autoret-list', 'AutoriController@autoretList');
+Route::post('/rent', 'LibriController@rent')->name('rent');
+Route::post('/return', 'LibriController@return')->name('return');

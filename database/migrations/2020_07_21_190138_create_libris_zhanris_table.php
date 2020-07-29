@@ -14,6 +14,7 @@ class CreateLibrisZhanrisTable extends Migration
     public function up()
     {
         Schema::create('libris_zhanris', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('zhanri_id');
             $table->foreign('zhanri_id')->references('id')->on('zhanris');
             $table->unsignedBigInteger('libri_id');

@@ -21,6 +21,8 @@ class UsersController extends Controller
      */
     public function index()
     {
+        if(!auth()->user()->isAdmin)
+            return redirect('/')->with('error','Nuk keni autorizim');
         $users = User::all();
         return view('users.index')->with('users',$users);
     }
@@ -32,6 +34,8 @@ class UsersController extends Controller
      */
     public function create()
     {
+        if(!auth()->user()->isAdmin)
+            return redirect('/')->with('error','Nuk keni autorizim');
         return view('users.create');
     }
 
@@ -43,6 +47,8 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
+        if(!auth()->user()->isAdmin)
+            return redirect('/')->with('error','Nuk keni autorizim');
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -58,7 +64,7 @@ class UsersController extends Controller
             $user->isAdmin = false;
         $user->password = Hash::make($request->password);
         $user->save();
-        return redirect('/users');
+        return redirect('/users')->with('success','U shtua perdoruesi');
         //
     }
 
@@ -70,6 +76,8 @@ class UsersController extends Controller
      */
     public function show($id)
     {
+        if(!auth()->user()->isAdmin)
+            return redirect('/')->with('error','Nuk keni autorizim');
         $user = User::find($id);
         $librat = $user->libris()->get();
         return view('users.show')->with('user',$user)->with('librat',$librat);
@@ -83,6 +91,8 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
+        if(!auth()->user()->isAdmin)
+            return redirect('/')->with('error','Nuk keni autorizim');
         $user = User::find($id);
         return view('users.edit')->with('user',$user);
     }
@@ -96,10 +106,12 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!auth()->user()->isAdmin)
+            return redirect('/')->with('error','Nuk keni autorizim');
         $user = User::find($id);
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$user->id],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$id],
             'password' => ['confirmed'],
         ]);
         $user->name = $request->name;
@@ -113,7 +125,7 @@ class UsersController extends Controller
             $user->password = Hash::make($request->password);
         }
         $user->save();
-        return redirect('/users');
+        return redirect('/users')->with('success','U ndryshua perdoruesi');
     }
 
     /**
@@ -124,8 +136,11 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
+        if(!auth()->user()->isAdmin)
+        return redirect('/')->with('error','Nuk keni autorizim');
         $user = User::find($id);
+        $user->libris()->detach();
         $user->delete();
-        return redirect('/users');
+        return redirect('/users')->with('success','U fshi perdoruesi');
     }
 }

@@ -40,6 +40,6 @@ class User extends Authenticatable
 
     public function libris()
     {
-        return $this->belongsToMany('App\Libri','kartoni')->withPivot(['data_e_marrjes','afati',])->withTimeStamps();
+        return $this->belongsToMany('App\Libri','kartoni')->withPivot(['data_e_marrjes','afati','kthyer','id'])->withTimeStamps();
     }
 }

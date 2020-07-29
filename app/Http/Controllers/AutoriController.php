@@ -4,9 +4,29 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Autor;
+use DataTables;
 
 class AutoriController extends Controller
 {
+
+
+    public function autoretList()
+    {
+        $autoret = Autor::all();
+        $table = DataTables::of($autoret)
+        ->addColumn('Shto' ,'<a class="btn btn-circle btn-secondary btn-sm"   data-dismiss="modal" onclick="
+        var sel = document.getElementById(\'autoret\');
+        var opt = document.createElement(\'option\');
+        var inp = document.getElementById(\'autoret-list\');
+        opt.appendChild( document.createTextNode(\'{{$name}}\') );
+        opt.value = \'{{$id}}\';
+        sel.appendChild(opt);
+        inp.value += \'{{$id}}\' +\',\';
+        " ><i class="fa text-light fa-arrow-right"></i></a>')
+        ->rawColumns(['Shto'])
+        ->make(true);
+        return $table;
+    }
 
     public function autoret()
     {
@@ -54,12 +74,30 @@ class AutoriController extends Controller
         $request->validate([
             'name' => 'required',
             'periudha' => 'required',
+            'ditelindja' => 'required|date',
+            'biografia' => 'required',
+            'Foto' =>'image|nullable|max:1999',
         ]);
         $autori = new Autor;
         $autori->name = $request->name;
         $autori->periudha = $request->periudha;
+        $autori->ditelindja = $request->ditelindja;
+        $autori->biografia = $request->biografia;
+        if($request->hasFile('Foto'))
+        {
+            $fileNamewithExt = $request->file('Foto')->getClientOriginalName();
+            $fileName = pathInfo($fileNamewithExt, PATHINFO_FILENAME);
+            $extension = $request->file('Foto')->getClientOriginalExtension();
+            $fileNametoStore = 'Autori-'.$request->name.'.'.$extension;
+            $request->file('Foto')->move(public_path('img'), $fileNametoStore);
+        }
+        else
+        {
+            $fileNametoStore = 'no-image.png';
+        }
+        $autori->foto = $fileNametoStore;
         $autori->save();
-        return redirect('/autor');
+        return redirect('/autor')->with('success','U shtua autori');
     }
 
     /**
@@ -104,12 +142,26 @@ class AutoriController extends Controller
         $request->validate([
             'name' => 'required',
             'periudha' => 'required',
+            'ditelindja' => 'required|date',
+            'biografia' => 'required',
+            'Foto' =>'image|nullable|max:1999',
         ]);
         $autori = Autor::find($id);
+        if($request->hasFile('Foto'))
+        {
+            $fileNamewithExt = $request->file('Foto')->getClientOriginalName();
+            $fileName = pathInfo($fileNamewithExt, PATHINFO_FILENAME);
+            $extension = $request->file('Foto')->getClientOriginalExtension();
+            $fileNametoStore = 'Autori-'.$autori->name.'.'.$extension;
+            $request->file('Foto')->move(public_path('img'), $fileNametoStore);
+            $autori->foto = $fileNametoStore;
+        }
         $autori->name = $request->name;
         $autori->periudha = $request->periudha;
+        $autori->ditelindja = $request->ditelindja;
+        $autori->biografia = $request->biografia;
         $autori->save();
-        return redirect('/autor');
+        return redirect('/autor')->with('success','U ndryshua autori');
     }
 
     /**
@@ -123,7 +175,8 @@ class AutoriController extends Controller
         if(!auth()->user()->isAdmin)
             return redirect('/')->with('error','Nuk keni autorizim');
         $autori = Autor::find($id);
+        $autori->libris()->detach();
         $autori->delete();
-        return redirect('/autor');
+        return redirect('/autor')->with('success','U fshi autori');
     }
 }

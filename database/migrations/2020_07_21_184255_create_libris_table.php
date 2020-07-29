@@ -18,6 +18,7 @@ class CreateLibrisTable extends Migration
             $table->integer('ISBN');
             $table->string('titulli');
             $table->integer('stoku');
+            $table->string('foto');
             $table->timestamps();
         });
     }

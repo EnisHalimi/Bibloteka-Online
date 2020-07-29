@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Libri;
+use App\Zhanri;
+use App\Autor;
 
 class HomeController extends Controller
 {
@@ -23,6 +26,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $librat = Libri::all();
+        $zhanret = Zhanri::all();
+        $autoret = Autor::all();
+        return view('bibloteka.index')->with('librat', $librat)->with('zhanret', $zhanret)->with('autoret', $autoret);
     }
 }

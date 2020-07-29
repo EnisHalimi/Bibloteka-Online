@@ -14,12 +14,14 @@ class CreateKartoniTable extends Migration
     public function up()
     {
         Schema::create('kartoni', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('libri_id');
             $table->foreign('libri_id')->references('id')->on('libris');
             $table->date('data_e_marrjes');
             $table->date('afati');
+            $table->boolean('kthyer');
             $table->timestamps();
         });
     }
