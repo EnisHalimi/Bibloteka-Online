@@ -27,3 +27,6 @@ Route::get('/zhanret-list', 'ZhanriController@zhanretList');
 Route::get('/autoret-list', 'AutoriController@autoretList');
 Route::post('/rent', 'LibriController@rent')->name('rent');
 Route::post('/return', 'LibriController@return')->name('return');
+Route::get('libriSearch', 'LibriController@search')->name('libriSearch');
+Route::get('autorSearch', 'AutoriController@search')->name('autorSearch');
+Route::get('zhanerSearch', 'ZhanriController@search')->name('zhanerSearch');

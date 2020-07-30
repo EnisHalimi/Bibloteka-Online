@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Libri;
 use App\Zhanri;
 use App\Autor;
+use App\User;
 
 class HomeController extends Controller
 {
@@ -26,9 +27,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $librat = Libri::all();
-        $zhanret = Zhanri::all();
-        $autoret = Autor::all();
-        return view('bibloteka.index')->with('librat', $librat)->with('zhanret', $zhanret)->with('autoret', $autoret);
+        $librat = Libri::paginate(15);
+        $zhanret = Zhanri::orderBy('created_at','desc')->limit(10)->get();
+        return view('bibloteka.index')->with('librat', $librat)->with('zhanret', $zhanret);
     }
 }

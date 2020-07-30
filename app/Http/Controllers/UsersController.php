@@ -12,7 +12,8 @@ class UsersController extends Controller
     public function kartoni()
     {
         $user = User::find(auth()->user()->id);
-        return view('bibloteka.kartoni')->with('user',$user);
+        $librat = $user->libris()->paginate(15);
+        return view('bibloteka.kartoni')->with('user',$user)->with('librat',$librat);
     }
     /**
      * Display a listing of the resource.
@@ -23,7 +24,7 @@ class UsersController extends Controller
     {
         if(!auth()->user()->isAdmin)
             return redirect('/')->with('error','Nuk keni autorizim');
-        $users = User::all();
+        $users = User::paginate(15);
         return view('users.index')->with('users',$users);
     }
 
@@ -79,7 +80,7 @@ class UsersController extends Controller
         if(!auth()->user()->isAdmin)
             return redirect('/')->with('error','Nuk keni autorizim');
         $user = User::find($id);
-        $librat = $user->libris()->get();
+        $librat = $user->libris()->paginate(15);
         return view('users.show')->with('user',$user)->with('librat',$librat);
     }
 
@@ -91,10 +92,14 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        if(!auth()->user()->isAdmin)
+        if(auth()->user()->isAdmin || auth()->user()->id == $id)
+        {
+            $user = User::find($id);
+            return view('users.edit')->with('user',$user);
+        }
+        else
             return redirect('/')->with('error','Nuk keni autorizim');
-        $user = User::find($id);
-        return view('users.edit')->with('user',$user);
+
     }
 
     /**
@@ -106,26 +111,33 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if(!auth()->user()->isAdmin)
-            return redirect('/')->with('error','Nuk keni autorizim');
-        $user = User::find($id);
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$id],
-            'password' => ['confirmed'],
-        ]);
-        $user->name = $request->name;
-        $user->email = $request->email;
-        if($request->admin)
-            $user->isAdmin = true;
-        else
-            $user->isAdmin = false;
-        if($request->password > 0)
+        if(auth()->user()->isAdmin || auth()->user()->id == $id)
         {
-            $user->password = Hash::make($request->password);
+
+            $user = User::find($id);
+            $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$id],
+                'password' => ['confirmed'],
+            ]);
+            $user->name = $request->name;
+            $user->email = $request->email;
+            if($request->admin)
+                $user->isAdmin = true;
+            else
+                $user->isAdmin = false;
+            if($request->password > 0)
+            {
+                $user->password = Hash::make($request->password);
+            }
+            $user->save();
+            if(auth()->user()->isAdmin)
+                return redirect('/users')->with('success','U ndryshua perdoruesi');
+            else
+                return redirect('/')->with('success','U ndryshua perdoruesi');
         }
-        $user->save();
-        return redirect('/users')->with('success','U ndryshua perdoruesi');
+        else
+            return redirect('/')->with('error','Nuk keni autorizim');
     }
 
     /**

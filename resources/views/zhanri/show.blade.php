@@ -10,6 +10,7 @@
         <th>Titulli</th>
     <td>{{$zhanri->titulli}}</td>
     </tr>
+    @if(auth()->user()->isAdmin)
     <tr>
         <th>Data</th>
     <td>{{$zhanri->created_at}}</td>
@@ -44,6 +45,40 @@
                 </div>
             </div>
         </div>
+        @else
+    </tbody>
+</table>
+        @endif
+<hr>
+
+<h2>Librat</h2>
+<table class="table table-stripped">
+<thead>
+    <th>ISBN</th>
+    <th>Titulli</th>
+    <th>Autori</th>
+    <th>Menaxhimi</th>
+</thead>
+<tbody>
+    @foreach($librat as $libri)
+    <tr>
+    <td>{{$libri->ISBN}}</td>
+        <td>{{$libri->titulli}}</td>
+        <td>@foreach($libri->autors as $autori)
+            {{$autori->name}}
+            @if (!$loop->last)
+                ,
+            @endif
+        @endforeach</td>
+        <td>
+        <a class="btn btn-secondary" href="/libri/{{$libri->id}}"><i class="fa fa-eye"></i> Shiko</a>
+        </td>
+
+    </tr>
+    @endforeach
+</tbody>
+</table>
+{{$librat->links()}}
 </div>
 
 

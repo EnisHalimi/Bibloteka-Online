@@ -8,7 +8,13 @@ use DataTables;
 
 class ZhanriController extends Controller
 {
-    protected $dateFormat = 'd/M/Y H';
+
+    public function search(Request $request)
+    {
+        $keyword = $request->keyword;
+        $zhanret = Zhanri::where('titulli','LIKE',"%{$keyword}%")->paginate(15);
+        return view('bibloteka.zhanret')->with('zhanret', $zhanret)->with('keyword',$keyword);
+    }
 
     public function zhanretList()
     {
@@ -30,7 +36,7 @@ class ZhanriController extends Controller
 
     public function zhanret()
     {
-        $zhanret = Zhanri::all();
+        $zhanret = Zhanri::paginate(15);
         return view('bibloteka.zhanret')->with('zhanret',$zhanret);
     }
     /**
@@ -42,7 +48,7 @@ class ZhanriController extends Controller
     {
         if(!auth()->user()->isAdmin)
             return redirect('/')->with('error','Nuk keni autorizim');
-        $zhanret = Zhanri::all();
+        $zhanret = Zhanri::paginate(15);
         return view('zhanri.index')->with('zhanret',$zhanret);
     }
 
@@ -85,10 +91,9 @@ class ZhanriController extends Controller
      */
     public function show($id)
     {
-        if(!auth()->user()->isAdmin)
-            return redirect('/')->with('error','Nuk keni autorizim');
         $zhanri = Zhanri::find($id);
-        return view('zhanri.show')->with('zhanri',$zhanri);
+        $librat = $zhanri->libris()->paginate(15);
+        return view('zhanri.show')->with('zhanri',$zhanri)->with('librat',$librat);
     }
 
     /**

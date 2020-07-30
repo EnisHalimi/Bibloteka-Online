@@ -4,6 +4,7 @@
 @section('content')
 <div class="container">
 <h1 class="h1 mb-5">Libri {{$libri->titulli}}</h1>
+@if(auth()->user()->isAdmin)
 <table class="table table-stripped">
 <tbody>
     <tr>
@@ -71,7 +72,42 @@
             </div>
         </div>
     </div>
-
+@else
+<table class="table table-stripped">
+    <tbody>
+        <tr>
+            <th>ISBN</th>
+        <td>{{$libri->ISBN}}</td>
+        </tr>
+        <tr>
+            <th>Titulli</th>
+        <td>{{$libri->titulli}}</td>
+        </tr>
+        <tr>
+            <th>Zhanret</th>
+        <td>@foreach($libri->zhanris as $zhanri)
+            <a href="/zhaner/{{$zhanri->id}}">{{$zhanri->titulli}}</a>
+                @if (!$loop->last)
+                    ,
+                @endif
+            @endforeach</td>
+        </tr>
+        <tr>
+            <th>Autoret</th>
+        <td>@foreach($libri->autors as $autor)
+            <a href="/autor/{{$autor->id}}">{{$autor->name}}</a>
+            @if (!$loop->last)
+                ,
+            @endif
+        @endforeach</td>
+        </tr>
+        <tr>
+            <th>Kopertina</th>
+        <td><img src="{{asset('img/'.$libri->foto.'')}}" class="img-fluid"> </td>
+        </tr>
+    </tbody>
+    </table>
+@endif
 </div>
 
 

@@ -28,7 +28,9 @@
     </tr>
 </tbody>
 </table>
+@if(auth()->user()->isAdmin)
 <hr>
+
 <a class="btn btn-secondary" href="{{ url()->previous() }}" ><i class="fa fa-chevron-left"></i> Kthehu</a>
     <a href="/autor/{{$autori->id}}/edit"  class="btn  btn-primary"><i class="fa fa-pen"></i> Ndrysho</a>
     <button class="btn btn-circle btn-danger" data-toggle="modal" data-target="#fshijModal{{$autori->id}}"><i class="fa fa-trash"></i> Fshij</button>
@@ -56,6 +58,38 @@
             </div>
         </div>
     </div>
+    @else
+    @endif
+
+    <h2>Librat</h2>
+    <table class="table table-stripped">
+    <thead>
+        <th>ISBN</th>
+        <th>Titulli</th>
+        <th>Zhanri</th>
+        <th>Menaxhimi</th>
+    </thead>
+    <tbody>
+        @foreach($librat as $libri)
+        <tr>
+        <td>{{$libri->ISBN}}</td>
+            <td>{{$libri->titulli}}</td>
+            <td>@foreach($libri->zhanris as $zhanri)
+                {{$zhanri->titulli}}
+                @if (!$loop->last)
+                    ,
+                @endif
+            @endforeach</td>
+
+            <td>
+            <a class="btn btn-secondary" href="/libri/{{$libri->id}}"><i class="fa fa-eye"></i> Shiko</a>
+            </td>
+
+        </tr>
+        @endforeach
+    </tbody>
+    </table>
+    {{$librat->links()}}
 </div>
 
 

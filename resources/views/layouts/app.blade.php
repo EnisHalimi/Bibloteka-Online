@@ -25,14 +25,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
               <a class="navbar-brand" href="/">Bibloteka Online</a>
-              <div class="input-group w-25">
-                <input type="text" class="form-control" placeholder="Kerko..." aria-label="Kerko..." aria-describedby="kerko">
-                <div class="input-group-append">
-                    <button type="button"  class="btn btn-primary" >
-                      <i class="fa fa-search"></i>
-                    </button>
-                  </div>
-              </div>
+
               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
@@ -72,11 +65,11 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a class="nav-link" href="{{ route('login') }}">Kyqu</a>
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">Regjistrohu</a>
                                 </li>
                             @endif
                         @else
@@ -86,7 +79,9 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-
+                                <a class="dropdown-item" href="/users/{{auth()->user()->id}}/edit">
+                                     Ndrysho te dhenat
+                                 </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

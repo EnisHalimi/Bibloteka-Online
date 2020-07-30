@@ -46,7 +46,7 @@
 
                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation"  autocomplete="new-password">
         </div>
-
+        @if($user->isAdmin)
         <div class="form-group">
             <label for="admin" >Administrator</label>
 
@@ -57,6 +57,7 @@
             </span>
         @enderror
         </div>
+        @else @endif
 
 
         <div class="form-group">

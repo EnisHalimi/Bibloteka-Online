@@ -59,6 +59,7 @@
     @endforeach
 </tbody>
 </table>
+{{ $autoret->links() }}
 </div>
 </div>
 

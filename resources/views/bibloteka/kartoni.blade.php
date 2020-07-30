@@ -16,7 +16,7 @@
     <th>Menaxhimi</th>
 </thead>
 <tbody>
-    @foreach($user->libris as $libri)
+    @foreach($librat as $libri)
     <tr>
     <td>{{$libri->ISBN}}</td>
         <td>{{$libri->titulli}}</td>
@@ -41,6 +41,7 @@
     @endforeach
 </tbody>
 </table>
+{{$librat->links()}}
 </div>
 
 

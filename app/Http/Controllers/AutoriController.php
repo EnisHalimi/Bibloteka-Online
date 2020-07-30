@@ -9,6 +9,12 @@ use DataTables;
 class AutoriController extends Controller
 {
 
+    public function search(Request $request)
+    {
+        $keyword = $request->keyword;
+        $autoret = Autor::where('name','LIKE',"%{$keyword}%")->orWhere('periudha','LIKE',$keyword)->paginate(15);
+        return view('bibloteka.autoret')->with('autoret', $autoret)->with('keyword',$keyword);
+    }
 
     public function autoretList()
     {
@@ -30,7 +36,7 @@ class AutoriController extends Controller
 
     public function autoret()
     {
-        $autoret = Autor::all();
+        $autoret = Autor::paginate(15);
         return view('bibloteka.autoret')->with('autoret',$autoret);
     }
     /**
@@ -42,7 +48,7 @@ class AutoriController extends Controller
     {
         if(!auth()->user()->isAdmin)
             return redirect('/')->with('error','Nuk keni autorizim');
-        $autoret = Autor::all();
+        $autoret = Autor::paginate(15);
         return view('autori.index')->with('autoret',$autoret);
 
 
@@ -108,10 +114,9 @@ class AutoriController extends Controller
      */
     public function show($id)
     {
-        if(!auth()->user()->isAdmin)
-            return redirect('/')->with('error','Nuk keni autorizim');
         $autori = Autor::find($id);
-        return view('autori.show')->with('autori',$autori);
+        $librat = $autori->libris()->paginate(15);
+        return view('autori.show')->with('autori',$autori)->with('librat',$librat);
     }
 
     /**

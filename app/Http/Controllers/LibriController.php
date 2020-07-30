@@ -12,6 +12,12 @@ use App\User;
 class LibriController extends Controller
 {
 
+    public function search(Request $request)
+    {
+        $keyword = $request->keyword;
+        $librat = Libri::where('titulli','LIKE',"%{$keyword}%")->orWhere('ISBN','=',$keyword)->paginate(15);
+        return view('bibloteka.librat')->with('librat', $librat)->with('keyword',$keyword);
+    }
 
     public function rent(Request $request)
     {
@@ -41,8 +47,8 @@ class LibriController extends Controller
 
     public function librat()
     {
-        $librat = Libri::all();
-        return view('bibloteka.librat')->with('librat', $librat);
+        $librat = Libri::paginate(15);
+        return view('bibloteka.librat')->with('librat', $librat)->with('keyword','');
     }
     /**
      * Display a listing of the resource.
@@ -53,7 +59,7 @@ class LibriController extends Controller
     {
         if(!auth()->user()->isAdmin)
             return redirect('/')->with('error','Nuk keni autorizim');
-        $librat = Libri::all();
+        $librat = Libri::paginate(15);
         return view('libri.index')->with('librat', $librat);
     }
 
@@ -137,8 +143,6 @@ class LibriController extends Controller
      */
     public function show($id)
     {
-        if(!auth()->user()->isAdmin)
-            return redirect('/')->with('error','Nuk keni autorizim');
         $libri = Libri::find($id);
         return view('libri.show')->with('libri', $libri);
     }

@@ -56,6 +56,7 @@
     @endforeach
 </tbody>
 </table>
+{{$zhanret->links()}}
 </div>
 </div>
 

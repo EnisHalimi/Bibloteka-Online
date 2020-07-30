@@ -15,7 +15,7 @@ class CreateLibrisTable extends Migration
     {
         Schema::create('libris', function (Blueprint $table) {
             $table->id();
-            $table->integer('ISBN');
+            $table->bigInteger('ISBN');
             $table->string('titulli');
             $table->integer('stoku');
             $table->string('foto');

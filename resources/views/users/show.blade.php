@@ -37,11 +37,16 @@
     <th>Menaxhimi</th>
 </thead>
 <tbody>
-    @foreach($user->libris as $libri)
+    @foreach($librat as $libri)
     <tr>
     <td>{{$libri->ISBN}}</td>
         <td>{{$libri->titulli}}</td>
-        <td>{{$libri->created_at}}</td>
+        <td>@foreach($libri->zhanris as $zhanri)
+            {{$zhanri->titulli}}
+            @if (!$loop->last)
+                ,
+            @endif
+        @endforeach</td>
         <td>{{$libri->pivot->data_e_marrjes}}</td>
         <td>{{$libri->pivot->afati}}</td>
         <td>@if($libri->pivot->kthyer) Po @else Jo @endif</td>
@@ -54,6 +59,7 @@
     @endforeach
 </tbody>
 </table>
+{{$librat->links()}}
 </div>
 
 
